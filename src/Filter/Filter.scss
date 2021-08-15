@@ -1,0 +1,22 @@
+.filter {
+    width: 300px;
+    height: 100vh;
+    background: #fcfcfc;
+    font-family: arial;
+    box-shadow: 0px 0px 15px 0px #000000;
+
+    h2 {
+        margin: 0;
+        padding: 10px 15px;
+    }
+
+    &__content {
+        padding: 10px 15px;
+    }
+
+    &__item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+}

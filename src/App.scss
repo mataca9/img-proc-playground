@@ -1,0 +1,9 @@
+.content {
+  display: flex;
+  justify-content: space-between;
+  background: #999;
+
+  canvas {
+    height: 100vh;
+  }
+}
