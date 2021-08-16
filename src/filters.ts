@@ -91,8 +91,6 @@ export function sobel(input: HTMLCanvasElement, output: HTMLCanvasElement) {
 }
 
 export function convolute(input: HTMLCanvasElement, output: HTMLCanvasElement, kernel: number[][], adjust: number = 0) {
-    let debug = 20;
-
     const inputCtx = input.getContext("2d") as CanvasRenderingContext2D;
     const outputCtx = output.getContext("2d") as CanvasRenderingContext2D;
 
@@ -107,6 +105,8 @@ export function convolute(input: HTMLCanvasElement, output: HTMLCanvasElement, k
         for (let y = 0; y < data.height; y++) {
             let [r, g, b, a] = [0, 0, 0, 0];
 
+            // xx and yy represent the position where the kernel will be applied
+            // kx and ky represent the kernel itself
             for (let xx = x - hw, kx = 0; xx <= x + hw; xx++, kx++) {
                 for (let yy = y - hw, ky = 0; yy <= y + hw; yy++, ky++) {
                     const kernelWeigth = kernel[ky][kx];
@@ -119,6 +119,8 @@ export function convolute(input: HTMLCanvasElement, output: HTMLCanvasElement, k
                 }
             }
 
+            // in some cases there is a need for adjust depending on kernel values,
+            // where they can result in numbers above the 2^8 (the limit for rgb values)
             if (adjust) {
                 r *= adjust;
                 g *= adjust;

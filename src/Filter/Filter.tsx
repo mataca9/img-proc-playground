@@ -1,31 +1,35 @@
 import React, { useContext } from "react"
 import { FilterContext } from "../App";
+import { Deboucer } from "../utils";
 import './Filter.scss'
 
 function Filter() {
     const { filters, updateFilters } = useContext(FilterContext) as any;
+    const deboucer = new Deboucer();
 
     function updateFilter(filter: any) {
-        updateFilters({
-            ...filters,
-            ...filter
-        })
+        deboucer.debouce(() => {
+            updateFilters({
+                ...filters,
+                ...filter
+            })
+        }, 100)
     }
 
     return (
         <div className="filter">
             <h2>Filters</h2>
-            <section className="filter__content">
+            <div className="filter__content">
                 <div className="filter__item">
                     Grayscale
                     <input type="checkbox" defaultChecked={filters.grayscale} onChange={e => updateFilter({ grayscale: e.target.checked })} />
                 </div>
                 <div className="filter__item">
-                    Brighten
+                    Brighten ({filters.brighten})
                     <input type="range" min="0" max="255" value={filters.brighten} onChange={e => updateFilter({ brighten: Number(e.target.value) })} />
                 </div>
                 <div className="filter__item">
-                    Threshold
+                    Threshold ({filters.threshold})
                     <input type="range" min="0" max="255" value={filters.threshold} onChange={e => updateFilter({ threshold: Number(e.target.value) })} />
                 </div>
                 <div className="filter__item">
@@ -40,7 +44,7 @@ function Filter() {
                     Sobel
                     <input type="checkbox" defaultChecked={filters.sobel} onChange={e => updateFilter({ sobel: e.target.checked })} />
                 </div>
-            </section>
+            </div>
         </div>
     )
 }

@@ -37,3 +37,15 @@ export function loadImage(canvas: HTMLCanvasElement, img: HTMLImageElement) {
             canvas.height
         );
 }
+
+export class Deboucer {
+    public timeout: any;
+
+    debouce(callback: Function, deboucedTime: number) {
+        if (this?.timeout) {
+            clearTimeout(this.timeout);
+        }
+
+        this.timeout = setTimeout(callback, deboucedTime);
+    }
+}
