@@ -5,4 +5,5 @@ export interface IFilter {
     blur?: boolean;
     sharpen?: boolean;
     sobel?: boolean;
+    median?: boolean;
 }

@@ -4,6 +4,9 @@
   background: #999;
 
   canvas {
-    height: 100vh;
+    flex: 1;  
+    align-self: flex-start;
+    max-height: 100vh;
+    max-width: calc(100vw / 2 - 250px);
   }
 }

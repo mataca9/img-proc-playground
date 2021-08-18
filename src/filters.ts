@@ -1,4 +1,4 @@
-import { getPixel, writePixel } from "./utils";
+import { getIntensity, getPixel, writePixel } from "./utils";
 
 export function grayscale(input: HTMLCanvasElement, output: HTMLCanvasElement) {
     const inputCtx = input.getContext("2d") as CanvasRenderingContext2D;
@@ -88,6 +88,67 @@ export function sobel(input: HTMLCanvasElement, output: HTMLCanvasElement) {
     ];
     convolute(input, output, kernel1, 0.5);
     convolute(input, output, kernel2, 0.5);
+}
+
+export function medianGrayscale(input: HTMLCanvasElement, output: HTMLCanvasElement, kernelWidth: number) {
+    const inputCtx = input.getContext("2d") as CanvasRenderingContext2D;
+    const outputCtx = output.getContext("2d") as CanvasRenderingContext2D;
+
+    const data = inputCtx.getImageData(0, 0, input.width, input.height);
+    const result = inputCtx.getImageData(0, 0, input.width, input.height);
+
+    const hw = Math.floor(kernelWidth / 2);
+
+    for (let x = 0; x < data.width; x++) {
+        for (let y = 0; y < data.height; y++) {
+            const pixelsAround = [];
+            for (let xx = x - hw; xx <= x + hw; xx++) {
+                for (let yy = y - hw; yy <= y + hw; yy++) {
+                    const pixel = getPixel(data, xx, yy);
+                    const intensity = getIntensity(pixel);
+                    pixelsAround.push(intensity);
+                }
+            }
+            // median
+            const value = pixelsAround.sort((a, b) => a - b)[Math.floor(pixelsAround.length / 2)];
+            writePixel(result, x, y, value, value, value, 255);
+        }
+    }
+
+    outputCtx.putImageData(result, 0, 0);
+}
+
+export function median(input: HTMLCanvasElement, output: HTMLCanvasElement, kernelWidth: number) {
+    const inputCtx = input.getContext("2d") as CanvasRenderingContext2D;
+    const outputCtx = output.getContext("2d") as CanvasRenderingContext2D;
+
+    const data = inputCtx.getImageData(0, 0, input.width, input.height);
+    const result = inputCtx.getImageData(0, 0, input.width, input.height);
+
+    const hw = Math.floor(kernelWidth / 2);
+
+    for (let x = 0; x < data.width; x++) {
+        for (let y = 0; y < data.height; y++) {
+            const rPixelsAround = [];
+            const gPixelsAround = [];
+            const bPixelsAround = [];
+            for (let xx = x - hw; xx <= x + hw; xx++) {
+                for (let yy = y - hw; yy <= y + hw; yy++) {
+                    const pixel = getPixel(data, xx, yy);
+                    rPixelsAround.push(pixel.r);
+                    gPixelsAround.push(pixel.g);
+                    bPixelsAround.push(pixel.b);
+                }
+            }
+            // median
+            const r = rPixelsAround.sort((a, b) => a - b)[Math.floor(rPixelsAround.length / 2)];
+            const g = gPixelsAround.sort((a, b) => a - b)[Math.floor(gPixelsAround.length / 2)];
+            const b = bPixelsAround.sort((a, b) => a - b)[Math.floor(bPixelsAround.length / 2)];
+            writePixel(result, x, y, r, g, b, 255);
+        }
+    }
+
+    outputCtx.putImageData(result, 0, 0);
 }
 
 export function convolute(input: HTMLCanvasElement, output: HTMLCanvasElement, kernel: number[][], adjust: number = 0) {

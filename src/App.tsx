@@ -2,7 +2,7 @@ import React, { Context, createContext, useEffect, useRef, useState } from 'reac
 import logo from './logo.svg'
 import './App.scss'
 import { loadImage } from './utils';
-import { brighten, grayscale, threshold, blur, sharpen, sobel } from './filters';
+import { brighten, grayscale, threshold, blur, sharpen, sobel, median } from './filters';
 import Filter from './Filter/Filter';
 import { IFilter } from './model';
 
@@ -20,7 +20,7 @@ function App() {
   function drawImage(canvas: HTMLCanvasElement) {
     return new Promise(resolve => {
       const img = new Image();
-      img.src = getImageUrl('eevee');
+      img.src = getImageUrl('noise2');
       img.crossOrigin = "Anonymous";
       img.addEventListener("load", () => {
         loadImage(canvas, img);
@@ -60,6 +60,11 @@ function App() {
 
     if (filter.sobel) {
       sobel(getCurrentCanvas(first), canvasResult);
+      first = false;
+    }
+
+    if (filter.median) {
+      median(getCurrentCanvas(first), canvasResult, 5);
       first = false;
     }
   }

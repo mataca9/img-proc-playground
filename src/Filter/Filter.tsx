@@ -44,6 +44,10 @@ function Filter() {
                     Sobel
                     <input type="checkbox" defaultChecked={filters.sobel} onChange={e => updateFilter({ sobel: e.target.checked })} />
                 </div>
+                <div className="filter__item">
+                    Median
+                    <input type="checkbox" defaultChecked={filters.median} onChange={e => updateFilter({ median: e.target.checked })} />
+                </div>
             </div>
         </div>
     )
