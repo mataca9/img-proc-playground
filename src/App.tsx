@@ -1,7 +1,7 @@
 import React, { Context, createContext, useEffect, useRef, useState } from 'react'
 import logo from './logo.svg'
 import './App.scss'
-import { loadImage } from './utils';
+import { drawImage } from './utils';
 import { brighten, grayscale, threshold, blur, sharpen, sobel, median } from './filters';
 import Filter from './Filter/Filter';
 import { IFilter } from './model';
@@ -9,21 +9,29 @@ import { IFilter } from './model';
 export const FilterContext = createContext({});
 
 function App() {
-  const [filters, updateFilters] = useState<IFilter>({ brighten: 0, grayscale: true, threshold: 0, blur: false, sharpen: false });
+  const [filters, updateFilters] = useState<IFilter>({
+    brighten: 0, 
+    grayscale: false, 
+    threshold: 0, 
+    blur: false, 
+    sharpen: false
+  });
+
   const originalRef = useRef(null);
   const resultRef = useRef(null);
+  const image = 'eevee.jpg';
 
   function getImageUrl(name: string) {
-    return new URL(`assets/${name}.jpg`, import.meta.url).href
+    return new URL(`assets/${name}`, import.meta.url).href
   }
 
-  function drawImage(canvas: HTMLCanvasElement) {
+  function loadImage(canvas: HTMLCanvasElement, imageName: string) {
     return new Promise(resolve => {
       const img = new Image();
-      img.src = getImageUrl('noise2');
+      img.src = getImageUrl(imageName);
       img.crossOrigin = "Anonymous";
       img.addEventListener("load", () => {
-        loadImage(canvas, img);
+        drawImage(canvas, img);
         resolve(null);
       });
     })
@@ -73,7 +81,10 @@ function App() {
     const canvasOriginal = originalRef.current as any;
     const canvasResult = resultRef.current as any;
 
-    Promise.all([drawImage(canvasOriginal), drawImage(canvasResult)]).then(() => {
+    Promise.all([
+      loadImage(canvasOriginal, image),
+      loadImage(canvasResult, image)
+    ]).then(() => {
       process(filters, canvasOriginal, canvasResult);
     })
   }, [filters])

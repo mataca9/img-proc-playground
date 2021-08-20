@@ -18,7 +18,7 @@ export function getPixel(image: ImageData, x: number, y: number): IPixel {
     return pixel;
 }
 
-export function writePixel(image: ImageData, x: number, y: number, r: number, g: number, b: number, a = 255) {
+export function writePixel(image: ImageData,x: number, y: number, r: number, g: number, b: number, a = 255) {
     const position = (x + image.width * y) * 4;
     const d = image.data;
     [d[position],
@@ -27,7 +27,7 @@ export function writePixel(image: ImageData, x: number, y: number, r: number, g:
     d[position + 3]] = [r, g, b, a];
 }
 
-export function loadImage(canvas: HTMLCanvasElement, img: HTMLImageElement) {
+export function drawImage(canvas: HTMLCanvasElement, img: HTMLImageElement) {
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
     canvas.width = img.width;
     canvas.height = img.height;

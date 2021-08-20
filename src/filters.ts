@@ -76,16 +76,19 @@ export function sharpen(input: HTMLCanvasElement, output: HTMLCanvasElement) {
 }
 
 export function sobel(input: HTMLCanvasElement, output: HTMLCanvasElement) {
+
     const kernel1 = [
         [-1, 0, 1],
         [-2, 0, 2],
         [-1, 0, 1]
     ];
+
     const kernel2 = [
         [-1, -2, -1],
         [0, 0, 0],
         [1, 2, 1]
     ];
+    
     convolute(input, output, kernel1, 0.5);
     convolute(input, output, kernel2, 0.5);
 }
