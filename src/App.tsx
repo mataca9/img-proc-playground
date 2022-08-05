@@ -1,5 +1,4 @@
 import React, { Context, createContext, useEffect, useRef, useState } from 'react'
-import logo from './logo.svg'
 import './App.scss'
 import { drawImage } from './utils';
 import { brighten, grayscale, threshold, blur, sharpen, sobel, median } from './filters';
@@ -22,7 +21,7 @@ function App() {
   const image = 'eevee.jpg';
 
   function getImageUrl(name: string) {
-    return new URL(`assets/${name}`, import.meta.url).href
+    return new URL(`./assets/${name}`, import.meta.url).href
   }
 
   function loadImage(canvas: HTMLCanvasElement, imageName: string) {

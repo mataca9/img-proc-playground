@@ -15,3 +15,6 @@ $ npm install
 ```
 $ npm run dev
 ```
+
+## Live demo
+[Demo](https://mataca9.github.io/img-proc-playground/)
